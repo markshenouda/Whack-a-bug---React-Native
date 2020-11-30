@@ -1,21 +1,35 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { StateProvider, useStateValue } from './StateProvider'
+import reducer, { initialState } from './reducer'
+import Home from './Home'
+import Game from './Game'
+import Result from './Result'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+function App() {
+  const [{screen},] = useStateValue()
+  
+  switch(screen) {
+    case 'Home':
+      return <Home />
+
+    case 'Game':
+      return <Game />
+
+    case 'Result':
+      return <Result />
+
+    default:
+      return <Home />
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default function index() {
+  return (
+    <StateProvider reducer={reducer} initialState={initialState} >
+      <App />
+    </StateProvider>
+  )
+}
